@@ -24,7 +24,7 @@ class SearchBar extends React.Component {
                 className={this.state.open ? 'open' : ''}
                 onKeyPress={e => {
                   if (e.key === 'Enter') {
-                    this.props.onOpenResults(this.state.results)
+                    this.props.onOpenResults(this.state.results, 0)
                   }
                 }}
                 placeholder="Type a code snippet or function"
@@ -48,14 +48,20 @@ class SearchBar extends React.Component {
   onChange(event) {
     const query = event.target.value
 
+    const results = fuzzySearchCollection(this.props.classMethods, query, {
+      keys: ['name'],
+      id: 'id',
+      includeMatches: true,
+    }).map(result => ({
+      ...result,
+      methodText:
+        '  ' + result.file.text.slice(result.node.start, result.node.end),
+    }))
+
     this.setState({
       query,
       open: query.length > 0,
-      results: fuzzySearchCollection(this.props.classMethods, query, {
-        keys: ['name'],
-        id: 'id',
-        includeMatches: true,
-      }),
+      results,
     })
   }
 }

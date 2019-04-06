@@ -1,14 +1,12 @@
 import React from 'react'
-import JSONTree from 'react-json-tree'
-import { Controlled as CodeMirror } from 'react-codemirror2'
-import Collapsable from './Collapsable'
-import ResultItem from './ResultItem'
+import ResultItem, { ActiveResultItem } from './ResultItem'
 
 class ResultList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       activeIndex: props.startingActiveIndex,
+      values: {},
     }
   }
 
@@ -25,30 +23,17 @@ class ResultList extends React.Component {
           {this.props.results.map((result, index) => (
             <ResultItem
               key={`code-mirror-${index}`}
-              file={result.file}
+              result={result}
               active={index === this.state.activeIndex}
               onClick={() => {
-                this.setState({ activeIndex: index })
+                this.setState({ activeIndex: index, select: false })
               }}
             />
           ))}
         </div>
 
         <div className="flex-1 overflow-scroll">
-          <p>{activeResult.file.path}</p>
-
-          <Collapsable label="AST json">
-            <JSONTree data={activeResult.file.tree} />
-          </Collapsable>
-
-          <CodeMirror
-            value={activeResult.file.text}
-            options={{
-              mode: 'jsx',
-              readOnly: true,
-              lineNumbers: true,
-            }}
-          />
+          <ActiveResultItem result={activeResult} />
         </div>
       </div>
     )

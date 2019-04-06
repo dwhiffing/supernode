@@ -14,6 +14,7 @@ export default class Application extends React.Component {
     this.state = {
       files: null,
       results: false,
+      startingActiveIndex: 0,
     }
 
     fetchRepoJavascriptFiles({
@@ -46,7 +47,7 @@ export default class Application extends React.Component {
 
     return (
       <div>
-        <Header />
+        <Header onClick={() => this.setState({ results: null })} />
 
         {results ? (
           <ResultList
