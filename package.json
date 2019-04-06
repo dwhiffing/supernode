@@ -1,0 +1,38 @@
+{
+  "name": "webpack-starter-template",
+  "version": "0.1.0",
+  "description": "Webpack starter template",
+  "scripts": {
+    "start": "WEBPACK_ENV=dev webpack-dev-server",
+    "deploy": "gh-pages -d build",
+    "build": "mkdir -p build && WEBPACK_ENV=production webpack && ncp src/static/ build/; http-server --port ${PORT:-8080} build"
+  },
+  "devDependencies": {
+    "autoprefixer-loader": "^3.1.0",
+    "babel-loader": "^5.3.2",
+    "css-loader": "^0.18.0",
+    "dotenv": "^6.2.0",
+    "exports-loader": "^0.6.2",
+    "extract-text-webpack-plugin": "^0.8.2",
+    "gh-pages": "^2.0.1",
+    "http-server": "^0.8.5",
+    "less-loader": "^2.2.0",
+    "ncp": "^2.0.0",
+    "source-map-loader": "^0.1.5",
+    "style-loader": "^0.12.3",
+    "webpack": "^1.12.1",
+    "webpack-dev-server": "^1.10.1"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.3.3",
+    "babel-types": "^6.26.0",
+    "babylon-walk": "^1.0.2",
+    "fs": "0.0.1-security",
+    "fuse.js": "^3.4.4",
+    "react": "^16.8.3",
+    "react-codemirror": "^1.0.0",
+    "react-codemirror2": "^5.1.0",
+    "react-dom": "^16.8.3",
+    "react-json-tree": "^0.11.2"
+  }
+}

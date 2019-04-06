@@ -1,0 +1,7 @@
+MVP
+
+Collect all js files from repo
+
+Scrape a list of repositories for function names
+Search function names by fuzzy with string
+show function body for each match
