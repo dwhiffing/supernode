@@ -2,45 +2,44 @@ import React from 'react'
 import ResultsPreview from './ResultsPreview'
 import { fuzzySearchCollection } from '../utils/index'
 
-class SearchBar extends React.Component {
+export class SearchInput extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { query: '' }
+    this.state = { open: false, results: [], query: props.query || '' }
     this.onChange = this.onChange.bind(this)
   }
 
   render() {
     return (
-      <div
-        className="flex justify-center items-center height-100"
-        style={{ paddingBottom: 90 }}>
-        <div className="flex justify-center">
-          <div className="flex flex-column items-center">
-            <h1>SUPERNODE</h1>
+      <div>
+        <input
+          type="text"
+          onChange={this.onChange}
+          value={this.state.query}
+          placeholder="Type a code snippet or function"
+          className={this.state.results.length > 0 ? 'open' : ''}
+          onKeyPress={e => {
+            if (e.key === 'Enter') {
+              this.setState({ open: false })
+              this.props.onOpenResults(this.state.query, this.state.results, 0)
+            }
+          }}
+        />
 
-            <div>
-              <input
-                onChange={this.onChange}
-                className={this.state.open ? 'open' : ''}
-                onKeyPress={e => {
-                  if (e.key === 'Enter') {
-                    this.props.onOpenResults(this.state.results, 0)
-                  }
-                }}
-                placeholder="Type a code snippet or function"
-              />
-              {this.state.results && (
-                <ResultsPreview
-                  query={this.state.query}
-                  results={this.state.results.slice(0, 6)}
-                  onClickResult={index =>
-                    this.props.onOpenResults(this.state.results, index)
-                  }
-                />
-              )}
-            </div>
-          </div>
-        </div>
+        {this.state.open && (
+          <ResultsPreview
+            query={this.state.query}
+            results={this.state.results.slice(0, 6)}
+            onClickResult={index => {
+              this.setState({ open: false })
+              this.props.onOpenResults(
+                this.state.query,
+                this.state.results,
+                index
+              )
+            }}
+          />
+        )}
       </div>
     )
   }
@@ -65,5 +64,24 @@ class SearchBar extends React.Component {
     })
   }
 }
+
+const SearchBar = ({ classMethods, onOpenResults }) => (
+  <div
+    className="flex justify-center items-center height-100"
+    style={{ paddingBottom: 90 }}>
+    <div className="flex justify-center">
+      <div className="flex flex-column items-center">
+        <h1>SUPERNODE</h1>
+
+        <div>
+          <SearchInput
+            classMethods={classMethods}
+            onOpenResults={onOpenResults}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+)
 
 export default SearchBar
