@@ -11,21 +11,29 @@ export class SearchInput extends React.Component {
 
   render() {
     return (
-      <div>
-        <input
-          type="text"
-          onChange={this.onChange}
-          value={this.state.query}
-          placeholder="Type a code snippet or function"
-          className={this.state.results.length > 0 ? 'open' : ''}
-          onKeyPress={e => {
-            if (e.key === 'Enter') {
-              this.setState({ open: false })
-              this.props.onOpenResults(this.state.query, this.state.results, 0)
-            }
-          }}
-        />
-
+      <div style={this.props.style}>
+        <div
+          className={`search-input ${
+            this.state.results.length > 0 ? 'open' : ''
+          }`}>
+          🔍
+          <input
+            type="text"
+            onChange={this.onChange}
+            value={this.state.query}
+            placeholder="Type a code snippet or function"
+            onKeyPress={e => {
+              if (e.key === 'Enter') {
+                this.setState({ open: false })
+                this.props.onOpenResults(
+                  this.state.query,
+                  this.state.results,
+                  0
+                )
+              }
+            }}
+          />
+        </div>
         {this.state.open && (
           <ResultsPreview
             query={this.state.query}
@@ -53,6 +61,7 @@ export class SearchInput extends React.Component {
       includeMatches: true,
     }).map(result => ({
       ...result,
+      shortPath: `../${result.file.path.match(/(\w+\.js)/)[1]}`,
       methodText:
         '  ' + result.file.text.slice(result.node.start, result.node.end),
     }))

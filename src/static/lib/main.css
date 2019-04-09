@@ -15,10 +15,13 @@ header {
   border-bottom: 1px solid #d0d0d0;
 }
 
-header .container {
+.container {
   max-width: 1200px;
   min-width: 800px;
   margin: 0 auto;
+}
+
+header .container {
   padding: 20px 80px;
 }
 
@@ -36,19 +39,25 @@ h1 {
   font-size: 50px;
 }
 
-input {
+.search-input {
   min-width: 400px;
   border-radius: 3px;
   border: 1px solid #d0d0d0;
-  font-size: 14px;
-  font-weight: 300;
-  padding: 12px 40px;
+  padding: 12px 20px;
 }
 
-input.open {
+.search-input.open {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-bottom-width: 0;
+}
+
+.search-input input {
+  min-width: 350px;
+  border: 0;
+  font-size: 14px;
+  font-weight: 300;
+  outline: none;
 }
 
 .height-100 {
@@ -111,6 +120,17 @@ input.open {
   margin: 20px;
   padding: 20px;
   border: 1px solid #cacaca;
+}
+
+.result > div > p {
+  font-family: Arial;
+  font-size: 12px;
+  line-height: 20px;
+  color: #8d8d8d;
+}
+
+.result p {
+  margin: 5px 0;
 }
 
 .result-active {
