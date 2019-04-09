@@ -11,13 +11,15 @@ export default class RepoFetcher extends React.Component {
     this.onSubmit = this.onSubmit.bind(this)
     this.state = {
       owner: 'dwhiffing',
-      repo: 'idle-game',
+      repo: 'hexacross',
       branch: 'master',
     }
 
     this.onChangeOwner = this.onChangeOwner.bind(this)
     this.onChangeRepo = this.onChangeRepo.bind(this)
     this.onChangeBranch = this.onChangeBranch.bind(this)
+
+    this.onSubmit(this.state)
   }
 
   render() {
