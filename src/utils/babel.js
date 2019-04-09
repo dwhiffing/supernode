@@ -11,7 +11,7 @@ const GET_CLASS_METHOD_VISITORS = {
 export const getTree = file =>
   parser.parse(file.text, {
     sourceType: 'module',
-    plugins: ['jsx'],
+    plugins: ['jsx', 'classProperties'],
   })
 
 export const getClassMethods = tree => {

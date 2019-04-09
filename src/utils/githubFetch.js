@@ -29,9 +29,11 @@ export const fetchFileContents = ({ owner, repo, branch }, files) =>
     files.map(({ path }) =>
       fetch(`${CONTENT_URI}/${owner}/${repo}/${branch}/${path}`).then(
         response =>
-          response
-            .text()
-            .then(text => ({ path, text, tree: getTree({ text }) }))
+          response.text().then(text => ({
+            path,
+            text,
+            tree: getTree({ text }),
+          }))
       )
     )
   )

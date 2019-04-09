@@ -1,6 +1,7 @@
 import React from 'react'
 import ResultsPreview from './ResultsPreview'
 import { fuzzySearchCollection } from '../utils/index'
+import RepoFetcher from './RepoFetcher'
 
 export class SearchInput extends React.Component {
   constructor(props) {
@@ -74,12 +75,13 @@ export class SearchInput extends React.Component {
   }
 }
 
-const SearchBar = ({ classMethods, onOpenResults }) => (
+const SearchBar = ({ classMethods, onOpenResults, onFetch }) => (
   <div
     className="flex justify-center items-center height-100"
     style={{ paddingBottom: 90 }}>
     <div className="flex justify-center">
       <div className="flex flex-column items-center">
+        <RepoFetcher onFetch={onFetch} />
         <h1>SUPERNODE</h1>
 
         <div>

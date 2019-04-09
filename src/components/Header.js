@@ -4,16 +4,11 @@ import { SearchInput } from './SearchBar'
 const HeaderLeft = () => (
   <div className="flex items-center">
     <div className="icon icon-logo" />
-    <a href="#">Featured</a>
-    <a href="#">How it works</a>
-    <a href="#">About</a>
   </div>
 )
 
 const HeaderRight = () => (
   <div className="flex items-center">
-    <a href="#">History</a>
-    <a href="#">Nightmode</a>
     <div className="icon icon-user" />
   </div>
 )

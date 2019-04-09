@@ -2,11 +2,7 @@ import React from 'react'
 import SearchBar from './components/SearchBar'
 import ResultList from './components/ResultList'
 import Header from './components/Header'
-import { fetchRepoJavascriptFiles } from './utils'
 import 'codemirror/mode/jsx/jsx'
-import { getClassMethods } from './utils/babel'
-
-const flatten = array => array.reduce((a, b) => a.concat(b), [])
 
 export default class Application extends React.Component {
   constructor() {
@@ -17,7 +13,6 @@ export default class Application extends React.Component {
       files: null,
     }
 
-    this.fetchRepo({ owner: 'dwhiffing', repo: 'hexacross', branch: 'master' })
     this.onSubmit = this.onSubmit.bind(this)
     this.onClear = this.onClear.bind(this)
   }
@@ -51,6 +46,7 @@ export default class Application extends React.Component {
             files={files}
             classMethods={classMethods}
             onOpenResults={this.onSubmit}
+            onFetch={this.onFetch.bind(this)}
           />
         )}
       </div>
@@ -65,23 +61,8 @@ export default class Application extends React.Component {
     this.setState({ searchTerm: null, results: null })
   }
 
-  fetchRepo({ owner, repo, branch }) {
-    fetchRepoJavascriptFiles({ owner, repo, branch }).then(files => {
-      const classMethods = flatten(
-        files.map(file =>
-          getClassMethods(file.tree)
-            .filter(node => node.key.name !== 'constructor')
-            .map(node => ({
-              file,
-              node,
-              id: `${file.path}:${node.key.name}`,
-              name: node.key.name,
-              type: 'ClassMethod',
-            }))
-        )
-      )
-
-      this.setState({ files, classMethods })
-    })
+  onFetch({ files, classMethods }) {
+    console.log(files, classMethods)
+    this.setState({ files, classMethods })
   }
 }
