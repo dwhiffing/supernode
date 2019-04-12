@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import ResultListView from './results/containers/ResultListView'
-import SearchView from './search/containers/SearchView'
+import ResultsView from './ResultsView'
+import SearchView from './SearchView'
 import 'codemirror/mode/jsx/jsx'
 
 const INITIAL_STATE = {
@@ -31,7 +31,7 @@ class SuperNode extends React.Component {
     console.log(this.state)
 
     return this.state.activeResultIndex > -1 ? (
-      <ResultListView {...props} />
+      <ResultsView {...props} />
     ) : (
       <SearchView {...props} />
     )

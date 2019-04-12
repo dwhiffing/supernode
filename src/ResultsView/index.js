@@ -1,9 +1,9 @@
 import React from 'react'
-import ResultList from '../components/ResultList'
-import Header from '../../shared/components/Header'
-import ResultPreview from '../components/ResultPreview'
+import ResultList from './components/ResultList'
+import Header from '../shared/components/Header'
+import ResultPreview from './components/ResultPreview'
 
-export default class ResultListView extends React.Component {
+export default class ResultsView extends React.Component {
   render() {
     return (
       <div>
@@ -14,7 +14,7 @@ export default class ResultListView extends React.Component {
             <ResultList
               results={this.props.results}
               activeIndex={this.props.activeResultIndex}
-              onClickResult={this.onClickResult}
+              onClickResult={this.onClickResult.bind(this)}
             />
 
             <div className="flex-1 overflow-scroll">

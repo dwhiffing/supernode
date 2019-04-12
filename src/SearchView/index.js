@@ -1,7 +1,7 @@
 import React from 'react'
-import Header from '../../shared/components/Header'
-import SearchBar, { SearchInput } from '../components/SearchBar'
-import RepoFetcher from '../components/RepoFetcher'
+import Header from '../shared/components/Header'
+import SearchBar, { SearchInput } from './components/SearchBar'
+import RepoFetcher from './components/RepoFetcher'
 
 export default class SearchView extends React.Component {
   constructor() {
