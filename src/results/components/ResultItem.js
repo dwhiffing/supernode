@@ -1,7 +1,6 @@
 import React from 'react'
 import { UnControlled as CodeMirror } from 'react-codemirror2'
 // import JSONTree from 'react-json-tree'
-// import Collapsable from './Collapsable'
 
 const ResultItem = ({ result, onClick, active }) => {
   return (
@@ -68,9 +67,7 @@ export class ActiveResultItem extends React.Component {
           }}
         />
 
-        {/* <Collapsable label="AST json">
-          <JSONTree data={result.file.tree} />
-        </Collapsable> */}
+        {/* <JSONTree data={result.file.tree} /> */}
       </div>
     )
   }

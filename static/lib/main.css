@@ -2,15 +2,6 @@ body {
   margin: 0;
 }
 
-.collapsable {
-  overflow: hidden;
-  height: 0;
-}
-
-.collapsable.open {
-  height: auto;
-}
-
 header {
   border-bottom: 1px solid #d0d0d0;
 }

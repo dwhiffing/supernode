@@ -31,7 +31,7 @@ module.exports = {
   devtool: 'source-map',
   devServer: {
     port: process.env.PORT || 8080,
-    contentBase: path.join(__dirname, 'src/static'),
+    contentBase: path.join(__dirname, 'static'),
   },
   node: {
     fs: 'empty',

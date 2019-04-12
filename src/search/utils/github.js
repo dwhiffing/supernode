@@ -21,10 +21,10 @@ const githubFetch = function(path) {
   }).then(response => response.json())
 }
 
-export const fetchRepoTree = ({ owner, repo, branch }) =>
+const fetchRepoTree = ({ owner, repo, branch }) =>
   githubFetch(`repos/${owner}/${repo}/git/trees/${branch}?recursive=1`)
 
-export const fetchFileContents = ({ owner, repo, branch }, files) =>
+const fetchFileContents = ({ owner, repo, branch }, files) =>
   Promise.all(
     files.map(({ path }) =>
       fetch(`${CONTENT_URI}/${owner}/${repo}/${branch}/${path}`).then(
@@ -35,5 +35,13 @@ export const fetchFileContents = ({ owner, repo, branch }, files) =>
             tree: getTree({ text }),
           }))
       )
+    )
+  )
+
+export const fetchRepoJavascriptFiles = ({ owner, repo, branch }) =>
+  fetchRepoTree({ owner, repo, branch }).then(({ tree }) =>
+    fetchFileContents(
+      { owner, repo, branch },
+      tree.filter(file => /\.jsx?$/.test(file.path))
     )
   )

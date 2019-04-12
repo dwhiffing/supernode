@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ResultsPreview = ({ query, results, onClickResult }) =>
+const ResultsPreview = ({ results, onClickResult }) =>
   results.length > 0 && (
     <div className="search-preview-results border" style={{ top: 25 }}>
       {results.map((result, index) => (

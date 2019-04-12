@@ -1,12 +1,6 @@
 import Fuse from 'fuse.js'
-import { fetchRepoTree, fetchFileContents } from './githubFetch'
 
-export const fetchRepoJavascriptFiles = options =>
-  fetchRepoTree(options).then(({ tree }) =>
-    fetchFileContents(options, tree.filter(file => /\.jsx?$/.test(file.path)))
-  )
-
-export function highlightText(text, matches) {
+function highlightText(text, matches) {
   let result = []
   let pair = matches.shift()
 
@@ -26,7 +20,7 @@ export function highlightText(text, matches) {
   return result.join('')
 }
 
-export const fuzzySearchCollection = (collection, queryString, fuseOpts) => {
+const fuzzySearchCollection = (collection, queryString, fuseOpts) => {
   const fuse = new Fuse(collection, fuseOpts)
   return fuse.search(queryString).map(result => {
     const item = collection.find(m => m.id === result.item)
@@ -37,3 +31,17 @@ export const fuzzySearchCollection = (collection, queryString, fuseOpts) => {
     }
   })
 }
+
+const fuzzySearch = (query, indexedFunctions) =>
+  fuzzySearchCollection(indexedFunctions, query, {
+    keys: ['name'],
+    id: 'id',
+    includeMatches: true,
+  }).map(result => ({
+    ...result,
+    shortPath: `../${result.file.path.match(/(\w+\.js)/)[1]}`,
+    methodText:
+      '  ' + result.file.text.slice(result.node.start, result.node.end),
+  }))
+
+export default fuzzySearch
