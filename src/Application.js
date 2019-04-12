@@ -8,7 +8,7 @@ export default class Application extends React.Component {
   constructor() {
     super()
     this.state = {
-      startingActiveIndex: 0,
+      selectedResultIndex: 0,
       results: null,
       files: null,
     }
@@ -23,7 +23,7 @@ export default class Application extends React.Component {
       results,
       files,
       indexedFunctions,
-      startingActiveIndex,
+      selectedResultIndex,
     } = this.state
 
     return (
@@ -37,7 +37,7 @@ export default class Application extends React.Component {
 
         {results ? (
           <ResultList
-            startingActiveIndex={startingActiveIndex}
+            activeIndex={selectedResultIndex}
             results={results}
             onClear={this.onClear}
           />
@@ -53,8 +53,8 @@ export default class Application extends React.Component {
     )
   }
 
-  onSubmit(query, results, startingActiveIndex) {
-    this.setState({ query, results, startingActiveIndex })
+  onSubmit(query, results, selectedResultIndex) {
+    this.setState({ query, results, selectedResultIndex })
   }
 
   onClear() {

@@ -5,7 +5,7 @@ class ResultList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeIndex: props.startingActiveIndex,
+      activeIndex: props.activeIndex,
       values: {},
     }
   }

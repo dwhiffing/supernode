@@ -1,6 +1,6 @@
 import React from 'react'
 import ResultsPreview from './ResultsPreview'
-import { fuzzySearchCollection } from '../utils/index'
+import { fuzzySearchCollection } from '../search/utils/index'
 import RepoFetcher from './RepoFetcher'
 
 export class SearchInput extends React.Component {
