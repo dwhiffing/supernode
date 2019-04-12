@@ -24,7 +24,7 @@ const DefaultHeader = ({ onClick }) => (
   </header>
 )
 
-const SearchHeader = ({ query, onClear, classMethods, onOpenResults }) => (
+const SearchHeader = ({ query, onClear, indexedFunctions, onOpenResults }) => (
   <header className="fixed top-0 left-0 right-0 bg-white z2">
     <div className="container">
       <div className="flex justify-between">
@@ -32,7 +32,7 @@ const SearchHeader = ({ query, onClear, classMethods, onOpenResults }) => (
           <div onClick={onClear} className="icon icon-logo" />
           <SearchInput
             query={query}
-            classMethods={classMethods}
+            indexedFunctions={indexedFunctions}
             onOpenResults={onOpenResults}
             style={{ marginLeft: 20 }}
           />

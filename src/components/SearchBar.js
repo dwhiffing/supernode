@@ -56,7 +56,7 @@ export class SearchInput extends React.Component {
   onChange(event) {
     const query = event.target.value
 
-    const results = fuzzySearchCollection(this.props.classMethods, query, {
+    const results = fuzzySearchCollection(this.props.indexedFunctions, query, {
       keys: ['name'],
       id: 'id',
       includeMatches: true,
@@ -75,7 +75,7 @@ export class SearchInput extends React.Component {
   }
 }
 
-const SearchBar = ({ classMethods, onOpenResults, onFetch }) => (
+const SearchBar = ({ indexedFunctions, onOpenResults, onFetch }) => (
   <div
     className="flex justify-center items-center height-100"
     style={{ paddingBottom: 90 }}>
@@ -86,7 +86,7 @@ const SearchBar = ({ classMethods, onOpenResults, onFetch }) => (
 
         <div>
           <SearchInput
-            classMethods={classMethods}
+            indexedFunctions={indexedFunctions}
             onOpenResults={onOpenResults}
           />
         </div>

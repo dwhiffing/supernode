@@ -1,6 +1,7 @@
 import React from 'react'
 import { fetchRepoJavascriptFiles } from '../utils'
-import { getClassMethods } from '../utils/babel'
+import { getFunctions } from '../utils/babel'
+import get from 'lodash/get'
 
 const flatten = array => array.reduce((a, b) => a.concat(b), [])
 
@@ -11,7 +12,7 @@ export default class RepoFetcher extends React.Component {
     this.onSubmit = this.onSubmit.bind(this)
     this.state = {
       owner: 'dwhiffing',
-      repo: 'hexacross',
+      repo: 'piglet',
       branch: 'master',
     }
 
@@ -71,22 +72,18 @@ export default class RepoFetcher extends React.Component {
       repo,
       branch,
     }).then(files => {
-      const classMethods = flatten(
+      const indexedFunctions = flatten(
         files.map(file =>
-          getClassMethods(file.tree)
-            .filter(node => node.key.name !== 'constructor')
-            .map(node => ({
-              file,
-              node,
-              id: `${file.path}:${node.key.name}`,
-              name: node.key.name,
-              type: 'ClassMethod',
-            }))
+          getFunctions(file.tree).map(node => {
+            const name = node.key ? node.key.name : node.id.name
+            const id = `${file.path}:${name}`
+            return { file, node, name, id }
+          })
         )
       )
       this.props.onFetch({
         files,
-        classMethods,
+        indexedFunctions,
       })
     })
   }

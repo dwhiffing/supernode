@@ -22,7 +22,7 @@ export default class Application extends React.Component {
       query,
       results,
       files,
-      classMethods,
+      indexedFunctions,
       startingActiveIndex,
     } = this.state
 
@@ -31,7 +31,7 @@ export default class Application extends React.Component {
         <Header
           query={query}
           onClear={() => this.setState({ results: null, query: null })}
-          classMethods={classMethods}
+          indexedFunctions={indexedFunctions}
           onOpenResults={this.onSubmit}
         />
 
@@ -44,7 +44,7 @@ export default class Application extends React.Component {
         ) : (
           <SearchBar
             files={files}
-            classMethods={classMethods}
+            indexedFunctions={indexedFunctions}
             onOpenResults={this.onSubmit}
             onFetch={this.onFetch.bind(this)}
           />
@@ -61,8 +61,7 @@ export default class Application extends React.Component {
     this.setState({ searchTerm: null, results: null })
   }
 
-  onFetch({ files, classMethods }) {
-    console.log(files, classMethods)
-    this.setState({ files, classMethods })
+  onFetch({ files, indexedFunctions }) {
+    this.setState({ files, indexedFunctions })
   }
 }
