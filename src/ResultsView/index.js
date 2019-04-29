@@ -2,12 +2,13 @@ import React from 'react'
 import ResultList from './components/ResultList'
 import Header from '../shared/components/Header'
 import ResultPreview from './components/ResultPreview'
+import { connect } from '../storeContext'
 
 const ResultsView = ({
-  resetAppState,
   results,
   resultIndex,
-  updateAppState,
+  resetAppState,
+  displayResults,
 }) => (
   <div>
     <Header onClick={resetAppState} />
@@ -17,7 +18,7 @@ const ResultsView = ({
         <ResultList
           results={results}
           activeIndex={resultIndex}
-          onClickResult={index => updateAppState({ resultIndex: index })}
+          onClickResult={displayResults}
         />
 
         <div className="flex-1 overflow-scroll">
@@ -28,4 +29,11 @@ const ResultsView = ({
   </div>
 )
 
-export default ResultsView
+export default connect(
+  ({ results, resultIndex }) => ({ results, resultIndex }),
+  dispatch => ({
+    displayResults: index =>
+      dispatch({ type: 'DISPLAY_RESULTS', payload: index }),
+    resetAppState: () => dispatch({ type: 'RESET' }),
+  })
+)(ResultsView)

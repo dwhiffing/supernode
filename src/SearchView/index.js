@@ -2,22 +2,23 @@ import React from 'react'
 import Header from '../shared/components/Header'
 import SearchBar from './components/SearchBar'
 import RepoFetcher from './components/RepoFetcher'
+import { connect } from '../storeContext'
 
 const SearchView = ({
   query,
   results,
-  resetAppState,
-  updateAppState,
   methods,
+  fetchRepo,
+  resetAppState,
+  displayResults,
+  updateResults,
 }) => (
   <div>
     <Header onClick={resetAppState} />
 
     <div className="flex justify-center items-center height-100">
       <div className="flex flex-column items-center">
-        <RepoFetcher
-          onFetch={(files, methods) => updateAppState({ files, methods })}
-        />
+        <RepoFetcher onFetch={fetchRepo} />
 
         <div className="flex justify-center">
           <div className="flex flex-column items-center">
@@ -28,10 +29,8 @@ const SearchView = ({
                 query={query}
                 results={results}
                 methods={methods}
-                onSubmit={(resultIndex = 0) => updateAppState({ resultIndex })}
-                onChange={(query, results) =>
-                  updateAppState({ query, results })
-                }
+                onSubmit={displayResults}
+                onChange={updateResults}
               />
             </div>
           </div>
@@ -41,4 +40,15 @@ const SearchView = ({
   </div>
 )
 
-export default SearchView
+export default connect(
+  state => ({ ...state }),
+  dispatch => ({
+    displayResults: (resultIndex = 0) =>
+      dispatch({ type: 'DISPLAY_RESULTS', payload: resultIndex }),
+    fetchRepo: (files, methods) =>
+      dispatch({ type: 'FETCH_REPO', payload: { files, methods } }),
+    updateResults: (query, results) =>
+      dispatch({ type: 'UPDATE_RESULTS', payload: { query, results } }),
+    resetAppState: () => dispatch({ type: 'RESET' }),
+  })
+)(SearchView)

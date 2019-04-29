@@ -1,15 +1,13 @@
 import React from 'react'
 
-const ResultList = props => (
+const ResultList = ({ results, activeIndex, onClickResult }) => (
   <div className="flex-1 overflow-scroll">
-    {props.results.map((result, index) => (
+    {results.map((result, index) => (
       <ResultItem
         key={`code-mirror-${index}`}
         result={result}
-        active={index === props.activeIndex}
-        onClick={() => {
-          props.onClickResult(index)
-        }}
+        active={index === activeIndex}
+        onClick={() => onClickResult(index)}
       />
     ))}
   </div>
