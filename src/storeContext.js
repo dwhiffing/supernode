@@ -8,7 +8,7 @@ const initialState = {
   methods: [],
 }
 
-const reducer = (state = initialState, action) => {
+const reducer = (state, action) => {
   if (action.type === 'FETCH_REPO') {
     return {
       ...state,
@@ -17,6 +17,11 @@ const reducer = (state = initialState, action) => {
     }
   }
   if (action.type === 'UPDATE_RESULTS') {
+    console.log({
+      ...state,
+      query: action.payload.query,
+      results: action.payload.results,
+    })
     return {
       ...state,
       query: action.payload.query,
@@ -53,16 +58,23 @@ const StoreProvider = ({ children }) => {
 
 const connect = (
   mapStateToProps = () => ({}),
-  mapDispatchToProps = () => ({})
+  mapDispatchToProps = {}
 ) => Component => props => (
   <StoreContext.Consumer>
-    {({ state, dispatch }) => (
-      <Component
-        {...props}
-        {...mapStateToProps(state, props)}
-        {...mapDispatchToProps(dispatch, props, state)}
-      />
-    )}
+    {({ state, dispatch }) => {
+      const mappedState = mapStateToProps(state, props)
+
+      let mappedDispatchers
+      if (typeof mapDispatchToProps === 'function') {
+        mappedDispatchers = mapDispatchToProps(dispatch, props, state)
+      } else if (typeof mapDispatchToProps === 'object') {
+        mappedDispatchers = { ...mapDispatchToProps }
+        Object.entries(mappedDispatchers).forEach(([key, value]) => {
+          mappedDispatchers[key] = (...args) => dispatch(value(...args))
+        })
+      }
+      return <Component {...props} {...mappedState} {...mappedDispatchers} />
+    }}
   </StoreContext.Consumer>
 )
 

@@ -1,7 +1,15 @@
 import React from 'react'
 import fuzzySearch from '../utils/fuzzySearch'
+import { connect } from '../../storeContext'
+import { displayResults, updateResults } from '../../actions'
 
-const SearchBar = ({ query, results, onSubmit, methods, onChange }) => (
+const SearchBar = ({
+  query,
+  results,
+  displayResults,
+  methods,
+  updateResults,
+}) => (
   <div>
     <div className={`search-input ${results.length > 0 ? 'open' : ''}`}>
       <input
@@ -9,9 +17,9 @@ const SearchBar = ({ query, results, onSubmit, methods, onChange }) => (
         placeholder="Type a code snippet or function"
         value={query}
         onChange={({ target: { value: query } }) => {
-          onChange(query, fuzzySearch(query, methods))
+          updateResults(query, fuzzySearch(query, methods))
         }}
-        onKeyPress={({ key }) => key === 'Enter' && onSubmit()}
+        onKeyPress={({ key }) => key === 'Enter' && displayResults()}
       />
     </div>
 
@@ -21,12 +29,12 @@ const SearchBar = ({ query, results, onSubmit, methods, onChange }) => (
           <div
             key={`result-${index}`}
             className="search-preview-result"
-            onClick={() => onSubmit(index)}>
+            onClick={() => displayResults(index)}>
             <div dangerouslySetInnerHTML={{ __html: `<p>${name}</p>` }} />
           </div>
         ))}
         <p
-          onClick={() => onSubmit(0)}
+          onClick={() => displayResults(0)}
           style={{ marginTop: 30, marginBottom: 30 }}>
           Press enter to see all results
         </p>
@@ -35,4 +43,7 @@ const SearchBar = ({ query, results, onSubmit, methods, onChange }) => (
   </div>
 )
 
-export default SearchBar
+export default connect(
+  ({ query, results, methods }) => ({ query, results, methods }),
+  { displayResults, updateResults }
+)(SearchBar)

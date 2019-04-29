@@ -1,13 +1,15 @@
 import React from 'react'
+import { displayResults } from '../../actions'
+import { connect } from '../../storeContext'
 
-const ResultList = ({ results, activeIndex, onClickResult }) => (
+const ResultList = ({ results, resultIndex, displayResults }) => (
   <div className="flex-1 overflow-scroll">
     {results.map((result, index) => (
       <ResultItem
         key={`code-mirror-${index}`}
         result={result}
-        active={index === activeIndex}
-        onClick={() => onClickResult(index)}
+        active={index === resultIndex}
+        onClick={() => displayResults(index)}
       />
     ))}
   </div>
@@ -36,4 +38,7 @@ const ResultItem = ({ result, onClick, active }) => (
   </div>
 )
 
-export default ResultList
+export default connect(
+  ({ results, resultIndex }) => ({ results, resultIndex }),
+  { displayResults }
+)(ResultList)

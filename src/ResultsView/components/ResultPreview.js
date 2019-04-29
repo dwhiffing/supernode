@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { UnControlled as CodeMirror } from 'react-codemirror2'
+import { connect } from '../../storeContext'
 
-const ResultPreview = ({ result }) => {
+const ResultPreview = ({ activeResult: result }) => {
   const [editor, setEditor] = useState()
 
   return (
@@ -41,4 +42,6 @@ const ResultPreview = ({ result }) => {
   )
 }
 
-export default ResultPreview
+export default connect(state => ({
+  activeResult: state.results[state.resultIndex],
+}))(ResultPreview)

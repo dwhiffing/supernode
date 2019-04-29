@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { fetchRepoJavascriptFiles } from '../utils/github'
 import { getIndexedFunctions } from '../utils/babel'
+import { connect } from '../../storeContext'
+import { fetchRepo } from '../../actions'
 
 // TODO: Should this be in the search pod?
 // TODO: This shouldn't be setting indexed functions.  Just fetching the files
 
-const RepoFetcher = ({ onFetch }) => {
+const RepoFetcher = ({ fetchRepo }) => {
   const [owner, setOwner] = useState('dwhiffing')
   const [repo, setRepo] = useState('piglet')
   const [branch, setBranch] = useState('master')
 
   const onSubmit = () => {
     fetchRepoJavascriptFiles({ owner, repo, branch }).then(files => {
-      onFetch(files, getIndexedFunctions(files))
+      fetchRepo(files, getIndexedFunctions(files))
     })
   }
 
@@ -39,4 +41,7 @@ const RepoFetcher = ({ onFetch }) => {
   )
 }
 
-export default RepoFetcher
+export default connect(
+  undefined,
+  { fetchRepo }
+)(RepoFetcher)
