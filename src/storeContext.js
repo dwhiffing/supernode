@@ -1,48 +1,5 @@
 import React, { createContext, useReducer } from 'react'
-
-const initialState = {
-  query: '',
-  resultIndex: -1,
-  results: [],
-  files: [],
-  methods: [],
-}
-
-const reducer = (state, action) => {
-  if (action.type === 'FETCH_REPO') {
-    return {
-      ...state,
-      files: action.payload.files,
-      methods: action.payload.methods,
-    }
-  }
-  if (action.type === 'UPDATE_RESULTS') {
-    console.log({
-      ...state,
-      query: action.payload.query,
-      results: action.payload.results,
-    })
-    return {
-      ...state,
-      query: action.payload.query,
-      results: action.payload.results,
-    }
-  }
-  if (action.type === 'DISPLAY_RESULTS') {
-    return {
-      ...state,
-      resultIndex: action.payload,
-    }
-  }
-  if (action.type === 'RESET') {
-    return {
-      ...initialState,
-      files: state.files,
-      methods: state.methods,
-    }
-  }
-  return state
-}
+import reducer, { initialState } from './reducer'
 
 const StoreContext = createContext(initialState)
 
@@ -58,24 +15,27 @@ const StoreProvider = ({ children }) => {
 
 const connect = (
   mapStateToProps = () => ({}),
-  mapDispatchToProps = {}
+  mapDispatchToProps = () => ({})
 ) => Component => props => (
   <StoreContext.Consumer>
-    {({ state, dispatch }) => {
-      const mappedState = mapStateToProps(state, props)
-
-      let mappedDispatchers
-      if (typeof mapDispatchToProps === 'function') {
-        mappedDispatchers = mapDispatchToProps(dispatch, props, state)
-      } else if (typeof mapDispatchToProps === 'object') {
-        mappedDispatchers = { ...mapDispatchToProps }
-        Object.entries(mappedDispatchers).forEach(([key, value]) => {
-          mappedDispatchers[key] = (...args) => dispatch(value(...args))
-        })
-      }
-      return <Component {...props} {...mappedState} {...mappedDispatchers} />
-    }}
+    {({ state, dispatch }) => (
+      <Component
+        {...props}
+        {...mapStateToProps(state, props)}
+        {...(typeof mapDispatchToProps === 'object'
+          ? bindActionCreators(mapDispatchToProps, dispatch)
+          : mapDispatchToProps(dispatch, props, state))}
+      />
+    )}
   </StoreContext.Consumer>
 )
+
+const bindActionCreators = (mapDispatchToProps, dispatch) => {
+  let mappedDispatchers = { ...mapDispatchToProps }
+  Object.entries(mappedDispatchers).forEach(([key, value]) => {
+    mappedDispatchers[key] = (...args) => dispatch(value(...args))
+  })
+  return mappedDispatchers
+}
 
 export { StoreContext, StoreProvider, connect }
