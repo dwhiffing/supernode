@@ -1,71 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { UnControlled as CodeMirror } from 'react-codemirror2'
 
-const ResultPreview = ({ result }) => (
-  <div>
+const ResultPreview = ({ result }) => {
+  const [editor, setEditor] = useState()
+
+  return (
     <div>
-      <p>
-        {result.name} - {result.file.path}
-      </p>
-    </div>
-
-    <CodePreview result={result} />
-  </div>
-)
-
-class CodePreview extends React.Component {
-  constructor(props) {
-    super(props)
-    this.selectAll = this.selectAll.bind(this)
-    this.selectNone = this.selectNone.bind(this)
-    this.copy = this.copy.bind(this)
-    this.reset = this.reset.bind(this)
-  }
-
-  componentDidMount() {
-    this.reset()
-  }
-
-  componentDidUpdate() {
-    this.reset()
-  }
-
-  render() {
-    return (
-      <div onClick={this.copy}>
+      <div>
+        <p>
+          {result.name} - {result.file.path}
+        </p>
+      </div>
+      <div
+        onClick={() => {
+          editor.setSelection(
+            { line: 0, ch: 0 },
+            { line: 9999, ch: 9999 },
+            { scroll: false }
+          )
+          editor.focus()
+          document.execCommand('copy')
+        }}>
         <CodeMirror
-          key={`code-mirror-${this.props.result.file.path}`}
-          editorDidMount={editor => (this.instance = editor)}
-          value={this.props.result.methodText}
+          key={`code-mirror-${result.file.path}`}
+          editorDidMount={editor => {
+            setEditor(editor)
+            editor.setSelection(
+              { line: 0, ch: 0 },
+              { line: 9999, ch: 9999 },
+              { scroll: false }
+            )
+            editor.indentSelection('smart')
+            editor.setSelection({ line: 0, ch: 0 })
+          }}
+          value={result.methodText}
           options={{ mode: 'jsx', lineNumbers: true }}
         />
       </div>
-    )
-  }
-
-  selectAll() {
-    this.instance.setSelection(
-      { line: 0, ch: 0 },
-      { line: 9999, ch: 9999 },
-      { scroll: false }
-    )
-  }
-
-  selectNone() {
-    this.instance.setSelection({ line: 0, ch: 0 })
-  }
-
-  reset() {
-    this.selectAll()
-    this.instance.indentSelection('smart')
-    this.selectNone()
-  }
-
-  copy() {
-    this.selectAll()
-    this.instance.focus()
-    document.execCommand('copy')
-  }
+    </div>
+  )
 }
 
 export default ResultPreview

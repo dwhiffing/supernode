@@ -32,8 +32,8 @@ const fuzzySearchCollection = (collection, queryString, fuseOpts) => {
   })
 }
 
-const fuzzySearch = (query, indexedFunctions) =>
-  fuzzySearchCollection(indexedFunctions, query, {
+const fuzzySearch = (query, methods) =>
+  fuzzySearchCollection(methods, query, {
     keys: ['name'],
     id: 'id',
     includeMatches: true,

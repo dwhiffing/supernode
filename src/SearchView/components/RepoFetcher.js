@@ -1,61 +1,42 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { fetchRepoJavascriptFiles } from '../utils/github'
 import { getIndexedFunctions } from '../utils/babel'
 
 // TODO: Should this be in the search pod?
 // TODO: This shouldn't be setting indexed functions.  Just fetching the files
 
-export default class RepoFetcher extends React.Component {
-  constructor() {
-    super()
+const RepoFetcher = ({ onFetch }) => {
+  const [owner, setOwner] = useState('dwhiffing')
+  const [repo, setRepo] = useState('piglet')
+  const [branch, setBranch] = useState('master')
 
-    this.onSubmit = this.onSubmit.bind(this)
-    this.onChangeOwner = this.onChangeOwner.bind(this)
-    this.onChangeRepo = this.onChangeRepo.bind(this)
-    this.onChangeBranch = this.onChangeBranch.bind(this)
-
-    this.state = { owner: 'dwhiffing', repo: 'piglet', branch: 'master' }
-    this.onSubmit()
-  }
-
-  render() {
-    return (
-      <div>
-        <input
-          value={this.state.owner}
-          onChange={this.onChangeOwner}
-          key="owner"
-        />
-        <input
-          value={this.state.repo}
-          onChange={this.onChangeRepo}
-          key="repo"
-        />
-        <input
-          value={this.state.branch}
-          onChange={this.onChangeBranch}
-          key="branch"
-        />
-        <button onClick={this.onSubmit}>Submit</button>
-      </div>
-    )
-  }
-
-  onChangeOwner({ target: { value } }) {
-    this.setState({ owner: value })
-  }
-
-  onChangeRepo({ target: { value } }) {
-    this.setState({ repo: value })
-  }
-
-  onChangeBranch({ target: { value } }) {
-    this.setState({ branch: value })
-  }
-
-  onSubmit() {
-    fetchRepoJavascriptFiles(this.state).then(files => {
-      this.props.onFetch(files, getIndexedFunctions(files))
+  const onSubmit = () => {
+    fetchRepoJavascriptFiles({ owner, repo, branch }).then(files => {
+      onFetch(files, getIndexedFunctions(files))
     })
   }
+
+  useEffect(onSubmit, [])
+  return (
+    <div>
+      <input
+        value={owner}
+        onChange={({ target: { value } }) => setOwner(value)}
+        key="owner"
+      />
+      <input
+        value={repo}
+        onChange={({ target: { value } }) => setRepo(value)}
+        key="repo"
+      />
+      <input
+        value={branch}
+        onChange={({ target: { value } }) => setBranch(value)}
+        key="branch"
+      />
+      <button onClick={onSubmit}>Submit</button>
+    </div>
+  )
 }
+
+export default RepoFetcher
