@@ -47,9 +47,8 @@ const reducer = (state, action) => {
   }
   if (action.type === 'RESET') {
     return {
-      ...initialState,
-      files: state.files,
-      methods: state.methods,
+      ...state,
+      resultIndex: -1,
     }
   }
   return state

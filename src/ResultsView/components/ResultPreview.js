@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { UnControlled as CodeMirror } from 'react-codemirror2'
 import { connect } from '../../storeContext'
-import { previousResult, nextResult } from '../../actions'
-
-import hotkeys from 'hotkeys-js'
+import { previousResult, nextResult, resetAppState } from '../../actions'
 
 const ResultPreview = ({
   results,
   resultIndex,
   nextResult,
   previousResult,
+  resetAppState,
 }) => {
   const result = results[resultIndex]
   const [editor, setEditor] = useState()
@@ -23,8 +22,12 @@ const ResultPreview = ({
       event.preventDefault()
       nextResult()
     })
+    Mousetrap.bind('esc', function(event) {
+      event.preventDefault()
+      resetAppState()
+    })
     return () => {
-      Mousetrap.unbind('up', 'down')
+      Mousetrap.unbind('up', 'down', 'esc')
     }
   }, [])
 
@@ -73,5 +76,6 @@ export default connect(
   {
     previousResult,
     nextResult,
+    resetAppState,
   }
 )(ResultPreview)
