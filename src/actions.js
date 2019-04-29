@@ -13,4 +13,7 @@ export const updateResults = (query, results) => ({
   payload: { query, results },
 })
 
+export const previousResult = () => ({ type: 'PREVIOUS_RESULT' })
+export const nextResult = () => ({ type: 'NEXT_RESULT' })
+
 export const resetAppState = () => ({ type: 'RESET' })

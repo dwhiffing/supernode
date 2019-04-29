@@ -21,6 +21,24 @@ const reducer = (state, action) => {
       results: action.payload.results,
     }
   }
+  if (action.type === 'PREVIOUS_RESULT') {
+    if (state.resultIndex - 1 < 0) {
+      return state
+    }
+    return {
+      ...state,
+      resultIndex: state.resultIndex - 1,
+    }
+  }
+  if (action.type === 'NEXT_RESULT') {
+    if (state.resultIndex + 1 > state.results.length - 1) {
+      return state
+    }
+    return {
+      ...state,
+      resultIndex: state.resultIndex + 1,
+    }
+  }
   if (action.type === 'DISPLAY_RESULTS') {
     return {
       ...state,

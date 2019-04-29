@@ -1,9 +1,32 @@
 import React, { useEffect, useState } from 'react'
 import { UnControlled as CodeMirror } from 'react-codemirror2'
 import { connect } from '../../storeContext'
+import { previousResult, nextResult } from '../../actions'
 
-const ResultPreview = ({ activeResult: result }) => {
+import hotkeys from 'hotkeys-js'
+
+const ResultPreview = ({
+  results,
+  resultIndex,
+  nextResult,
+  previousResult,
+}) => {
+  const result = results[resultIndex]
   const [editor, setEditor] = useState()
+
+  useEffect(() => {
+    Mousetrap.bind('up', function(event) {
+      event.preventDefault()
+      previousResult()
+    })
+    Mousetrap.bind('down', function(event) {
+      event.preventDefault()
+      nextResult()
+    })
+    return () => {
+      Mousetrap.unbind('up', 'down')
+    }
+  }, [])
 
   return (
     <div>
@@ -42,6 +65,13 @@ const ResultPreview = ({ activeResult: result }) => {
   )
 }
 
-export default connect(state => ({
-  activeResult: state.results[state.resultIndex],
-}))(ResultPreview)
+export default connect(
+  state => ({
+    results: state.results,
+    resultIndex: state.resultIndex,
+  }),
+  {
+    previousResult,
+    nextResult,
+  }
+)(ResultPreview)
