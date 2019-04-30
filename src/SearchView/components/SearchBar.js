@@ -62,7 +62,7 @@ const SearchBar = ({
           style={{
             top: 25,
           }}>
-          {results.map(({ highlightedName: name }, index) => (
+          {results.map(({ highlightedName: name, repoBranch }, index) => (
             <div
               key={`result-${index}`}
               className="search-preview-result"
@@ -73,7 +73,16 @@ const SearchBar = ({
                     ? 'gray'
                     : 'white',
               }}>
-              <div dangerouslySetInnerHTML={{ __html: `<p>${name}</p>` }} />
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: `<p>${name}</p>`,
+                  }}
+                />
+                <p>
+                  {repoBranch.owner}/{repoBranch.repo}
+                </p>
+              </div>
             </div>
           ))}
           <p

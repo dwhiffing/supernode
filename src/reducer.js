@@ -1,18 +1,51 @@
+import { getIndexedFunctions } from './SearchView/utils/babel'
+
 export const initialState = {
+  loaded: false,
   query: '',
   resultIndex: -1,
   results: [],
   files: [],
   methods: [],
+  repoList: [],
 }
 
+const save = window.localStorage.getItem('state')
+
 const reducer = (state, action) => {
+  if (action.type === 'LOAD') {
+    return save
+      ? {
+          ...JSON.parse(save),
+          methods: getIndexedFunctions(save.files),
+          loaded: true,
+        }
+      : { ...state, loaded: true }
+  }
+
   if (action.type === 'FETCH_REPO') {
-    return {
-      ...state,
-      files: action.payload.files,
-      methods: action.payload.methods,
+    const repoBranch = action.payload.files[0].repoBranch
+    const repo = `${repoBranch.owner}/${repoBranch.repo}/${repoBranch.branch}`
+    if (state.repoList.includes(repo)) {
+      return state
     }
+
+    const nextState = {
+      ...state,
+      repoList: [...state.repoList, repo],
+      files: [...state.files, ...action.payload.files],
+      methods: [...state.methods, ...action.payload.methods],
+    }
+
+    window.localStorage.setItem(
+      'state',
+      JSON.stringify({
+        ...nextState,
+        methods: [],
+      })
+    )
+
+    return nextState
   }
   if (action.type === 'UPDATE_RESULTS') {
     return {

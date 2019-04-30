@@ -5,7 +5,10 @@ export const displayResults = (resultIndex = 0) => ({
 
 export const fetchRepo = (files, methods) => ({
   type: 'FETCH_REPO',
-  payload: { files, methods },
+  payload: {
+    files,
+    methods,
+  },
 })
 
 export const updateResults = (query, results) => ({
@@ -17,3 +20,4 @@ export const previousResult = () => ({ type: 'PREVIOUS_RESULT' })
 export const nextResult = () => ({ type: 'NEXT_RESULT' })
 
 export const resetAppState = () => ({ type: 'RESET' })
+export const load = () => ({ type: 'LOAD' })

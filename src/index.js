@@ -1,15 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
-import ResultsView from './ResultsView'
-import SearchView from './SearchView'
-import { StoreProvider, connect } from './storeContext'
+import SuperNode from './app'
+import { StoreProvider } from './storeContext'
 import 'codemirror/mode/jsx/jsx'
-
-const SuperNodeBase = ({ resultIndex }) => {
-  return React.createElement(resultIndex > -1 ? ResultsView : SearchView)
-}
-
-const SuperNode = connect(({ resultIndex }) => ({ resultIndex }))(SuperNodeBase)
 
 ReactDOM.render(
   <StoreProvider>

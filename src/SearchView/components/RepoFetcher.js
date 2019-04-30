@@ -7,18 +7,27 @@ import { fetchRepo } from '../../actions'
 // TODO: Should this be in the search pod?
 // TODO: This shouldn't be setting indexed functions.  Just fetching the files
 
-const RepoFetcher = ({ fetchRepo }) => {
+const RepoFetcher = ({ repoList, fetchRepo }) => {
   const [owner, setOwner] = useState('dwhiffing')
   const [repo, setRepo] = useState('piglet')
   const [branch, setBranch] = useState('master')
 
+  const repoBranch = { owner, repo, branch }
   const onSubmit = () => {
-    fetchRepoJavascriptFiles({ owner, repo, branch }).then(files => {
-      fetchRepo(files, getIndexedFunctions(files))
+    fetchRepoJavascriptFiles(repoBranch).then(files => {
+      fetchRepo(
+        files.map(file => ({ ...file, repoBranch })),
+        getIndexedFunctions(files).map(func => ({ ...func, repoBranch }))
+      )
     })
   }
 
-  useEffect(onSubmit, [])
+  useEffect(() => {
+    if (repoList.length === 0) {
+      onSubmit()
+    }
+  }, [])
+
   return (
     <div>
       <input
@@ -37,11 +46,17 @@ const RepoFetcher = ({ fetchRepo }) => {
         key="branch"
       />
       <button onClick={onSubmit}>Submit</button>
+      <div>
+        <h4>Repo list</h4>
+        {repoList.map(repo => (
+          <p key={`item-${repo}`}>{repo}</p>
+        ))}
+      </div>
     </div>
   )
 }
 
 export default connect(
-  undefined,
+  ({ repoList }) => ({ repoList }),
   { fetchRepo }
 )(RepoFetcher)
